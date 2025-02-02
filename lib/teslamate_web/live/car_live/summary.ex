@@ -1,7 +1,7 @@
 defmodule TeslaMateWeb.CarLive.Summary do
   use TeslaMateWeb, :live_view
 
-  import TeslaMateWeb.Gettext
+  use Gettext, backend: TeslaMateWeb.Gettext
 
   alias TeslaMate.Vehicles.Vehicle.Summary
   alias TeslaMate.Vehicles.Vehicle
@@ -136,6 +136,7 @@ defmodule TeslaMateWeb.CarLive.Summary do
   defp error_to_str(:trunk_open), do: gettext("Trunk is open")
   defp error_to_str(:sentry_mode), do: gettext("Sentry mode is enabled")
   defp error_to_str(:preconditioning), do: gettext("Preconditioning")
+  defp error_to_str(:dogmode), do: gettext("Dog mode is enabled")
   defp error_to_str(:user_present), do: gettext("Driver present")
   defp error_to_str(:downloading_update), do: gettext("Downloading update")
   defp error_to_str(:update_in_progress), do: gettext("Update in progress")
