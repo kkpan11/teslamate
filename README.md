@@ -1,6 +1,6 @@
 # TeslaMate
 
-[![CI](https://github.com/teslamate-org/teslamate/actions/workflows/elixir.yml/badge.svg)](https://github.com/teslamate-org/teslamate/actions/workflows/elixir.yml)
+[![CI](https://github.com/teslamate-org/teslamate/actions/workflows/devops.yml/badge.svg)](https://github.com/teslamate-org/teslamate/actions/workflows/devops.yml)
 [![Publish Docker images](https://github.com/teslamate-org/teslamate/actions/workflows/buildx.yml/badge.svg)](https://github.com/teslamate-org/teslamate/actions/workflows/buildx.yml)
 [![](https://coveralls.io/repos/github/teslamate-org/teslamate/badge.svg?branch=master)](https://coveralls.io/github/teslamate-org/teslamate?branch=master)
 [![](https://img.shields.io/docker/v/teslamate/teslamate/latest)](https://hub.docker.com/r/teslamate/teslamate)
@@ -16,7 +16,7 @@ A powerful, self-hosted data logger for your Tesla.
 
 ## Documentation
 
-The documentation is available at [docs.teslamate.org](https://docs.teslamate.org/).
+The documentation is available at [https://docs.teslamate.org](https://docs.teslamate.org/)
 
 ## Features
 
@@ -34,6 +34,7 @@ The documentation is available at [docs.teslamate.org](https://docs.teslamate.or
 - [See when your car was online or asleep](https://docs.teslamate.org/docs/screenshots#states)
 - [Lifetime driving map](https://docs.teslamate.org/docs/screenshots/#lifetime-driving-map)
 - [Visited addresses](https://docs.teslamate.org/docs/screenshots/#visited-addresses)
+- [Battery Health](https://docs.teslamate.org/docs/screenshots/#battery-health)
 
 **General**
 
@@ -49,8 +50,11 @@ The documentation is available at [docs.teslamate.org](https://docs.teslamate.or
 
 ## Screenshots
 
-![Drive Details](/website/static/screenshots/drive.png)
 ![Web Interface](/website/static/screenshots/web_interface.png)
+
+![Drive Details](/website/static/screenshots/drive.png)
+
+![Battery Health](/website/static/screenshots/battery-health.png)
 
 <p align="center">
   <strong><a href="https://docs.teslamate.org/docs/screenshots">MORE SCREENSHOTS</a></strong>
@@ -58,5 +62,7 @@ The documentation is available at [docs.teslamate.org](https://docs.teslamate.or
 
 ## Credits
 
-- Authors: Adrian Kumpf – [List of contributors](https://github.com/teslamate-org/teslamate/graphs/contributors)
+- Initial Author: Adrian Kumpf
+- List of Contributors:
+- <a href="https://github.com/teslamate-org/teslamate/graphs/contributors"><img src="https://contrib.rocks/image?repo=teslamate-org/teslamate"  alt="TeslaMate Contributors"/></a>
 - Distributed under MIT License
