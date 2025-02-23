@@ -1,11 +1,11 @@
 # TeslaMate
 
-[![CI](https://github.com/teslamate-org/teslamate/actions/workflows/elixir.yml/badge.svg)](https://github.com/teslamate-org/teslamate/actions/workflows/elixir.yml)
+[![CI](https://github.com/teslamate-org/teslamate/actions/workflows/devops.yml/badge.svg)](https://github.com/teslamate-org/teslamate/actions/workflows/devops.yml)
 [![Publish Docker images](https://github.com/teslamate-org/teslamate/actions/workflows/buildx.yml/badge.svg)](https://github.com/teslamate-org/teslamate/actions/workflows/buildx.yml)
-[![](https://coveralls.io/repos/github/teslamate-org/teslamate/badge.svg?branch=master)](https://coveralls.io/github/teslamate-org/teslamate?branch=master)
-[![](https://img.shields.io/docker/v/teslamate/teslamate/latest)](https://hub.docker.com/r/teslamate/teslamate)
-[![](https://img.shields.io/docker/image-size/teslamate/teslamate/latest)](https://hub.docker.com/r/teslamate/teslamate)
-[![](https://img.shields.io/docker/pulls/teslamate/teslamate?color=%23099cec)](https://hub.docker.com/r/teslamate/teslamate)
+[![Coverage](https://coveralls.io/repos/github/teslamate-org/teslamate/badge.svg?branch=master)](https://coveralls.io/github/teslamate-org/teslamate?branch=master)
+[![current version](https://img.shields.io/docker/v/teslamate/teslamate/latest)](https://hub.docker.com/r/teslamate/teslamate)
+[![docker image size](https://img.shields.io/docker/image-size/teslamate/teslamate/latest)](https://hub.docker.com/r/teslamate/teslamate)
+[![docker pulls](https://img.shields.io/docker/pulls/teslamate/teslamate?color=%23099cec)](https://hub.docker.com/r/teslamate/teslamate)
 
 A powerful, self-hosted data logger for your Tesla.
 
@@ -16,11 +16,11 @@ A powerful, self-hosted data logger for your Tesla.
 
 ## Documentation
 
-The documentation is available at [docs.teslamate.org](https://docs.teslamate.org/).
+The documentation is available at [https://docs.teslamate.org](https://docs.teslamate.org/)
 
 ## Features
 
-**Dashboards**
+### Dashboards
 
 - [Drive and charging reports](https://docs.teslamate.org/docs/screenshots#charging-details)
 - [Driving efficiency report](https://docs.teslamate.org/docs/screenshots#efficiency)
@@ -34,8 +34,9 @@ The documentation is available at [docs.teslamate.org](https://docs.teslamate.or
 - [See when your car was online or asleep](https://docs.teslamate.org/docs/screenshots#states)
 - [Lifetime driving map](https://docs.teslamate.org/docs/screenshots/#lifetime-driving-map)
 - [Visited addresses](https://docs.teslamate.org/docs/screenshots/#visited-addresses)
+- [Battery Health](https://docs.teslamate.org/docs/screenshots/#battery-health)
 
-**General**
+### General
 
 - High precision drive data recording
 - No additional vampire drain: the car will fall asleep as soon as possible
@@ -49,14 +50,17 @@ The documentation is available at [docs.teslamate.org](https://docs.teslamate.or
 
 ## Screenshots
 
-![Drive Details](/website/static/screenshots/drive.png)
 ![Web Interface](/website/static/screenshots/web_interface.png)
 
-<p align="center">
-  <strong><a href="https://docs.teslamate.org/docs/screenshots">MORE SCREENSHOTS</a></strong>
-</p>
+![Drive Details](/website/static/screenshots/drive.png)
+
+![Battery Health](/website/static/screenshots/battery-health.png)
+
+### [More Screenshots](https://docs.teslamate.org/docs/screenshots)
 
 ## Credits
 
-- Authors: Adrian Kumpf – [List of contributors](https://github.com/teslamate-org/teslamate/graphs/contributors)
+- Initial Author: Adrian Kumpf
+- List of Contributors:
+- [![TeslaMate Contributors](https://contrib.rocks/image?repo=teslamate-org/teslamate)](https://github.com/teslamate-org/teslamate/graphs/contributors)
 - Distributed under MIT License

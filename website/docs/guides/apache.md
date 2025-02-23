@@ -28,8 +28,6 @@ Create the following files:
 ### docker-compose.yml
 
 ```yml title="docker-compose.yml"
-version: "3"
-
 services:
   teslamate:
     image: teslamate/teslamate:latest
@@ -52,7 +50,7 @@ services:
       - all
 
   database:
-    image: postgres:15
+    image: postgres:17
     restart: always
     environment:
       - POSTGRES_USER=${TM_DB_USER}
@@ -188,7 +186,7 @@ Define LOG access.teslamate.log
 
 ### .htpasswd
 
-This file contains a user and password for accessing TeslaMate (Basic-auth), note this is NOT your tesla.com password. You can generate it on the web if you don't have the [Apache tools](https://www.cyberciti.biz/faq/create-update-user-authentication-files/) installed (e.g. http://www.htaccesstools.com/htpasswd-generator/). Use BCrypt encryption mode.
+This file contains a user and password for accessing TeslaMate (Basic-auth), note this is NOT your tesla.com password. You can generate it on the web if you don't have the [Apache tools](https://www.cyberciti.biz/faq/create-update-user-authentication-files/) installed (e.g. <http://www.htaccesstools.com/htpasswd-generator/>). Use BCrypt encryption mode.
 
 **Example:**
 

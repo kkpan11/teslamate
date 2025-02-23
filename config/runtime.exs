@@ -50,7 +50,8 @@ defmodule Util do
   end
 
   def choose_http_binding_address() do
-    defaults = [transport_options: [socket_opts: [:inet6]]]
+    port = Util.get_env("PORT", prod: "4000", dev: "4000", test: "4002")
+    defaults = [transport_options: [socket_opts: [:inet6]], port: port]
 
     case System.get_env("HTTP_BINDING_ADDRESS", "") do
       "" ->
@@ -59,11 +60,28 @@ defmodule Util do
       address ->
         case :inet.parse_address(to_charlist(address)) do
           {:ok, ip} ->
-            [ip: ip]
+            [ip: ip, port: port]
 
           {:error, reason} ->
-            IO.puts("Cannot parse HTTP_BINDING_ADDRESS '#{address}': #{inspect(reason)}")
-            defaults
+            case String.at(address, 0) do
+              "/" ->
+                [
+                  ip: {:local, address},
+                  port: 0,
+                  transport_options: [
+                    post_listen_callback: fn _ ->
+                      File.chmod!(
+                        address,
+                        System.get_env("SOCKET_PERM", "755") |> String.to_integer(8)
+                      )
+                    end
+                  ]
+                ]
+
+              _ ->
+                IO.puts("Cannot parse HTTP_BINDING_ADDRESS '#{address}': #{inspect(reason)}")
+                defaults
+            end
         end
     end
   end
@@ -83,14 +101,22 @@ end
 config :teslamate,
   default_geofence: System.get_env("DEFAULT_GEOFENCE")
 
+case System.get_env("DATABASE_SOCKET_DIR") do
+  nil ->
+    config :teslamate, TeslaMate.Repo,
+      username: Util.fetch_env!("DATABASE_USER", all: "postgres"),
+      password: Util.fetch_env!("DATABASE_PASS", all: "postgres"),
+      hostname: Util.fetch_env!("DATABASE_HOST", all: "localhost"),
+      port: System.get_env("DATABASE_PORT", "5432")
+
+  socket_dir ->
+    config :teslamate, TeslaMate.Repo, socket_dir: socket_dir
+end
+
 config :teslamate, TeslaMate.Repo,
-  username: Util.fetch_env!("DATABASE_USER", all: "postgres"),
-  password: Util.fetch_env!("DATABASE_PASS", all: "postgres"),
-  database: Util.fetch_env!("DATABASE_NAME", dev: "teslamate_dev", test: "teslamate_test"),
-  hostname: Util.fetch_env!("DATABASE_HOST", all: "localhost"),
-  port: System.get_env("DATABASE_PORT", "5432"),
   pool_size: System.get_env("DATABASE_POOL_SIZE", "10") |> String.to_integer(),
-  timeout: System.get_env("DATABASE_TIMEOUT", "60000") |> String.to_integer()
+  timeout: System.get_env("DATABASE_TIMEOUT", "60000") |> String.to_integer(),
+  database: Util.fetch_env!("DATABASE_NAME", dev: "teslamate_dev", test: "teslamate_test")
 
 case System.get_env("DATABASE_SSL") do
   "true" ->
@@ -107,7 +133,14 @@ case System.get_env("DATABASE_SSL") do
   "noverify" ->
     config :teslamate, TeslaMate.Repo,
       ssl: true,
-      ssl_opts: [verify: :verify_none]
+      ssl_opts: [
+        server_name_indication:
+          to_charlist(
+            System.get_env("DATABASE_SSL_SNI") ||
+              Util.fetch_env!("DATABASE_HOST", all: "localhost")
+          ),
+        verify: :verify_none
+      ]
 
   _false ->
     config :teslamate, TeslaMate.Repo, ssl: false
@@ -118,10 +151,12 @@ if System.get_env("DATABASE_IPV6") == "true" do
 end
 
 config :teslamate, TeslaMateWeb.Endpoint,
-  http:
-    Util.choose_http_binding_address() ++
-      [port: Util.get_env("PORT", prod: "4000", dev: "4000", test: "4002")],
-  url: [host: System.get_env("VIRTUAL_HOST", "localhost"), port: 80],
+  http: Util.choose_http_binding_address(),
+  url: [
+    host: System.get_env("VIRTUAL_HOST", "localhost"),
+    path: System.get_env("URL_PATH", "/"),
+    port: 80
+  ],
   secret_key_base: System.get_env("SECRET_KEY_BASE", Util.random_string(64)),
   live_view: [signing_salt: System.get_env("SIGNING_SALT", Util.random_string(8))],
   check_origin: System.get_env("CHECK_ORIGIN", "false") |> Util.parse_check_origin!()
@@ -146,3 +181,5 @@ end
 config :teslamate, :srtm_cache, System.get_env("SRTM_CACHE", ".srtm_cache")
 
 config :teslamate, TeslaMate.Vault, key: Util.get_env("ENCRYPTION_KEY", test: "secret")
+
+config :tzdata, :data_dir, System.get_env("TZDATA_DIR", "/tmp")

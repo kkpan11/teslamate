@@ -23,8 +23,6 @@ Create the following three files:
 ### docker-compose.yml
 
 ```yml title="docker-compose.yml"
-version: "3"
-
 services:
   teslamate:
     image: teslamate/teslamate:latest
@@ -44,25 +42,25 @@ services:
     volumes:
       - ./import:/opt/app/import
     labels:
-      - "traefik.enable=true"
-      - "traefik.port=4000"
-      - "traefik.http.middlewares.redirect.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.teslamate-auth.basicauth.realm=teslamate"
-      - "traefik.http.middlewares.teslamate-auth.basicauth.usersfile=/auth/.htpasswd"
-      - "traefik.http.routers.teslamate-insecure.rule=Host(`${FQDN_TM}`)"
-      - "traefik.http.routers.teslamate-insecure.middlewares=redirect"
-      - "traefik.http.routers.teslamate-ws.rule=Host(`${FQDN_TM}`) && Path(`/live/websocket`)"
-      - "traefik.http.routers.teslamate-ws.entrypoints=websecure"
-      - "traefik.http.routers.teslamate-ws.tls"
-      - "traefik.http.routers.teslamate.rule=Host(`${FQDN_TM}`)"
-      - "traefik.http.routers.teslamate.middlewares=teslamate-auth"
-      - "traefik.http.routers.teslamate.entrypoints=websecure"
-      - "traefik.http.routers.teslamate.tls.certresolver=tmhttpchallenge"
+      traefik.enable: "true"
+      traefik.port: "4000"
+      traefik.http.middlewares.redirect.redirectscheme.scheme: "https"
+      traefik.http.middlewares.teslamate-auth.basicauth.realm: "teslamate"
+      traefik.http.middlewares.teslamate-auth.basicauth.usersfile: "/auth/.htpasswd"
+      traefik.http.routers.teslamate-insecure.rule: "Host(`${FQDN_TM}`)"
+      traefik.http.routers.teslamate-insecure.middlewares: "redirect"
+      traefik.http.routers.teslamate-ws.rule: "Host(`${FQDN_TM}`) && Path(`/live/websocket`)"
+      traefik.http.routers.teslamate-ws.entrypoints: "websecure"
+      traefik.http.routers.teslamate-ws.tls: ""
+      traefik.http.routers.teslamate.rule: "Host(`${FQDN_TM}`)"
+      traefik.http.routers.teslamate.middlewares: "teslamate-auth"
+      traefik.http.routers.teslamate.entrypoints: "websecure"
+      traefik.http.routers.teslamate.tls.certresolver: "tmhttpchallenge"
     cap_drop:
-      - all
+      - ALL
 
   database:
-    image: postgres:15
+    image: postgres:17
     restart: always
     environment:
       - POSTGRES_USER=${TM_DB_USER}
@@ -90,21 +88,21 @@ services:
     volumes:
       - teslamate-grafana-data:/var/lib/grafana
     labels:
-      - "traefik.enable=true"
-      - "traefik.port=3000"
-      - "traefik.http.middlewares.redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.grafana-insecure.rule=Host(`${FQDN_TM}`)"
-      - "traefik.http.routers.grafana-insecure.middlewares=redirect"
-      - "traefik.http.routers.grafana.rule=Host(`${FQDN_TM}`) && (Path(`/grafana`) || PathPrefix(`/grafana/`))"
-      - "traefik.http.routers.grafana.entrypoints=websecure"
-      - "traefik.http.routers.grafana.tls.certresolver=tmhttpchallenge"
+      traefik.enable: "true"
+      traefik.port: "3000"
+      traefik.http.middlewares.redirect.redirectscheme.scheme: "https"
+      traefik.http.routers.grafana-insecure.rule: "Host(`${FQDN_TM}`)"
+      traefik.http.routers.grafana-insecure.middlewares: "redirect"
+      traefik.http.routers.grafana.rule: "Host(`${FQDN_TM}`) && (Path(`/grafana`) || PathPrefix(`/grafana/`))"
+      traefik.http.routers.grafana.entrypoints: "websecure"
+      traefik.http.routers.grafana.tls.certresolver: "tmhttpchallenge"
 
   mosquitto:
     image: eclipse-mosquitto:2
     restart: always
     command: mosquitto -c /mosquitto-no-auth.conf
     ports:
-      - 127.0.0.1:1883:1883
+      - "127.0.0.1:1883:1883"
     volumes:
       - mosquitto-conf:/mosquitto/config
       - mosquitto-data:/mosquitto/data
@@ -123,8 +121,8 @@ services:
       - "--certificatesresolvers.tmhttpchallenge.acme.email=${LETSENCRYPT_EMAIL}"
       - "--certificatesresolvers.tmhttpchallenge.acme.storage=/etc/acme/acme.json"
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     volumes:
       - ./.htpasswd:/auth/.htpasswd
       - ./acme/:/etc/acme/
@@ -161,7 +159,7 @@ LETSENCRYPT_EMAIL=yourperson@example.com
 
 ### .htpasswd
 
-This file contains a user and password for accessing TeslaMate (Basic-auth); note that this is **not** your tesla.com password. You can generate it on the web if you don't have the [Apache tools](https://www.cyberciti.biz/faq/create-update-user-authentication-files/) installed (e.g. http://www.htaccesstools.com/htpasswd-generator/). Use BCrypt encryption mode.
+This file contains a user and password for accessing TeslaMate (Basic-auth); note that this is **not** your tesla.com password. You can generate it on the web if you don't have the [Apache tools](https://www.cyberciti.biz/faq/create-update-user-authentication-files/) installed (e.g. <http://www.htaccesstools.com/htpasswd-generator/>). Use BCrypt encryption mode.
 
 **Example:**
 
@@ -173,12 +171,12 @@ teslamate:$2y$10$f7PB3UF3PNzqMIXZmf1dIefOkrv/15Xt6Xw3pzc6mkS/B5qoWBdAG
 
 Start the stack with `docker compose up -d`.
 
-1. Open the web interface https://teslamate.example.com
+1. Open the web interface <https://teslamate.example.com>
 2. Sign in with your Tesla account
-3. In the _Settings_ page, update the _URLs_ fields. Set _Web App_ to https://teslamate.example.com and _Dashboards_ to https://teslamate.example.com/grafana
+3. In the _Settings_ page, update the _URLs_ fields. Set _Web App_ to <https://teslamate.example.com> and _Dashboards_ to <https://teslamate.example.com/grafana>
 
 > If you have difficulty logging into your Grafana, e.g. you cannot login with the credentials from either the simple setup or the values stored in the .env file, reset the admin password with the following command:
 
-```
+```bash
 docker compose exec grafana grafana-cli admin reset-admin-password
 ```
